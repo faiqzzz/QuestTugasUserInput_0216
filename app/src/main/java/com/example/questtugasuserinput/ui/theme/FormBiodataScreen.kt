@@ -1,43 +1,26 @@
 package com.example.questtugasuserinput
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.res.stringResource
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlinx.coroutines.delay
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormBiodataScreen() {
     var namaDepan by remember { mutableStateOf("") }
@@ -52,6 +35,7 @@ fun FormBiodataScreen() {
 
     // State untuk Date Picker
     var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
 
     // State untuk Experience Dropdown
     var expandedExperience by remember { mutableStateOf(false) }
@@ -61,18 +45,18 @@ fun FormBiodataScreen() {
     val expExpert = stringResource(id = R.string.exp_expert)
     val experienceList = listOf(expJunior, expMid, expSenior, expExpert)
 
-    // State untuk Submit Pop-up
+    // State untuk Submit Pop-up (Timer 5 Detik)
     var isSubmitted by remember { mutableStateOf(false) }
     var submittedResultText by remember { mutableStateOf("") }
 
-    // Logika Validasi
+    // Logika Validasi: Semua field utama harus terisi
     val isFormValid = namaDepan.isNotBlank() &&
             namaBelakang.isNotBlank() &&
             email.isNotBlank() &&
             tglLahir.isNotBlank() &&
             experience.isNotBlank()
 
-    // Warna Dinamis Tombol Berdasarkan Validasi
+    // Warna Dinamis Tombol Berdasarkan Validasi (Dari Resources)
     val buttonBgColor = if (isFormValid) {
         colorResource(id = R.color.button_active_bg)
     } else {
@@ -84,6 +68,7 @@ fun FormBiodataScreen() {
     } else {
         colorResource(id = R.color.button_disabled_text)
     }
+
     if (isSubmitted) {
         LaunchedEffect(isSubmitted) {
             delay(5000L) // Dialog tertutup otomatis setelah 5 detik
@@ -101,8 +86,8 @@ fun FormBiodataScreen() {
             }
         )
     }
-    val datePickerState = rememberDatePickerState()
 
+    // Dialog Pemilih Tanggal (Date Picker)
     if (showDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
@@ -126,6 +111,7 @@ fun FormBiodataScreen() {
             DatePicker(state = datePickerState)
         }
     }
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -134,51 +120,145 @@ fun FormBiodataScreen() {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // Komponen UI akan berada di sini
+            // Background Image dari Resources
+            Image(
+                painter = painterResource(id = R.drawable.bg_neon),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            // Card / Floating Box Form
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(top = 180.dp),
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = colorResource(id = R.color.card_bg)
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.title_form_biodata),
+                        color = colorResource(id = R.color.purple_title),
+                        fontSize = 24.sp,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.subtitle_form_biodata),
+                        color = colorResource(id = R.color.text_subtitle),
+                        fontSize = 12.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Nama Depan & Nama Belakang
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = namaDepan,
+                            onValueChange = { namaDepan = it },
+                            label = { Text(stringResource(id = R.string.hint_nama_depan)) },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        OutlinedTextField(
+                            value = namaBelakang,
+                            onValueChange = { namaBelakang = it },
+                            label = { Text(stringResource(id = R.string.hint_nama_belakang)) },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Email
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text(stringResource(id = R.string.hint_email)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Tgl Lahir (DatePicker) & Experience (Dropdown)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = tglLahir,
+                            onValueChange = { tglLahir = it },
+                            label = { Text(stringResource(id = R.string.hint_tgl_lahir)) },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp),
+                            readOnly = true,
+                            trailingIcon = {
+                                IconButton(onClick = { showDatePicker = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        )
+
+                        ExposedDropdownMenuBox(
+                            expanded = expandedExperience,
+                            onExpandedChange = { expandedExperience = !expandedExperience },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            OutlinedTextField(
+                                value = experience,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text(stringResource(id = R.string.hint_experience)) },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedExperience)
+                                },
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            ExposedDropdownMenu(
+                                expanded = expandedExperience,
+                                onDismissRequest = { expandedExperience = false }
+                            ) {
+                                experienceList.forEach { selectionOption ->
+                                    DropdownMenuItem(
+                                        text = { Text(selectionOption) },
+                                        onClick = {
+                                            experience = selectionOption
+                                            expandedExperience = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
         }
     }
-    Image(
-        painter = painterResource(id = R.drawable.bg_neon),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        contentScale = ContentScale.Crop
-    )
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(top = 180.dp),
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.card_bg)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Isian form
-        }
-    }
-    Text(
-        text = stringResource(id = R.string.title_form_biodata),
-        color = colorResource(id = R.color.purple_title),
-        fontSize = 24.sp,
-        style = MaterialTheme.typography.titleLarge
-    )
-
-    Spacer(modifier = Modifier.height(4.dp))
-
-    Text(
-        text = stringResource(id = R.string.subtitle_form_biodata),
-        color = colorResource(id = R.color.text_subtitle),
-        fontSize = 12.sp
-    )
-
-    Spacer(modifier = Modifier.height(24.dp))
 }
