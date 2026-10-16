@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -164,4 +165,20 @@ fun FormBiodataScreen() {
             // Isian form
         }
     }
+    Text(
+        text = stringResource(id = R.string.title_form_biodata),
+        color = colorResource(id = R.color.purple_title),
+        fontSize = 24.sp,
+        style = MaterialTheme.typography.titleLarge
+    )
+
+    Spacer(modifier = Modifier.height(4.dp))
+
+    Text(
+        text = stringResource(id = R.string.subtitle_form_biodata),
+        color = colorResource(id = R.color.text_subtitle),
+        fontSize = 12.sp
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
 }
