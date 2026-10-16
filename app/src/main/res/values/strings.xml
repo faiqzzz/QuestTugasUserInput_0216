@@ -21,4 +21,7 @@
     <string name="exp_mid">Mid-Level (1-3 Tahun)</string>
     <string name="exp_senior">Senior (3-5 Tahun)</string>
     <string name="exp_expert">Expert (5+ Tahun)</string>
+
+    <string name="title_submitted_data">Data Biodata Terkirim</string>
+    <string name="format_submitted_result">Nama: %1$s %2$s\nEmail: %3$s\nTgl Lahir: %4$s\nExperience: %5$s\nSkill: %6$s</string>
 </resources>
