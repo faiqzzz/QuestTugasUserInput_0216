@@ -303,6 +303,39 @@ fun FormBiodataScreen() {
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))
+
+                    // Tombol Proceed dengan Warna Dinamis
+                    Button(
+                        onClick = {
+                            val skillsList = mutableListOf<String>()
+                            if (isAndroidChecked) skillsList.add("Android")
+                            if (isUiUxChecked) skillsList.add("UI/UX")
+                            if (isWebChecked) skillsList.add("Web")
+                            val skillString = if (skillsList.isNotEmpty()) skillsList.joinToString(", ") else "-"
+
+                            submittedResultText = String.format(
+                                Locale.getDefault(),
+                                "Nama: %s %s\nEmail: %s\nTgl Lahir: %s\nExperience: %s\nSkill: %s",
+                                namaDepan, namaBelakang, email, tglLahir, experience, skillString
+                            )
+                            isSubmitted = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        enabled = isFormValid, // Tombol aktif setelah semua terisi
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = buttonBgColor,
+                            disabledContainerColor = buttonBgColor
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.btn_proceed),
+                            color = buttonTextColor,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }
