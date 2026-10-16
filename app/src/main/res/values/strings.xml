@@ -16,4 +16,9 @@
     <string name="btn_proceed">Proceed</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Batal</string>
+
+    <string name="exp_junior">Junior (0-1 Tahun)</string>
+    <string name="exp_mid">Mid-Level (1-3 Tahun)</string>
+    <string name="exp_senior">Senior (3-5 Tahun)</string>
+    <string name="exp_expert">Expert (5+ Tahun)</string>
 </resources>
