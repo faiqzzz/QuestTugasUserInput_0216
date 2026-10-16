@@ -14,7 +14,8 @@ class MainActivity : ComponentActivity() {
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // Workspace kosong / persiapan
+                // Memanggil Composable dari file FormBiodataScreen.kt
+                FormBiodataScreen()
             }
         }
     }
