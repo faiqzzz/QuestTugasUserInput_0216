@@ -127,4 +127,12 @@ fun FormBiodataScreen() {
             // Komponen UI akan berada di sini
         }
     }
+    Image(
+        painter = painterResource(id = R.drawable.bg_neon),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp),
+        contentScale = ContentScale.Crop
+    )
 }
