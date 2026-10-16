@@ -14,4 +14,10 @@
     <!-- Warna Tombol Nonaktif (Abu-abu) -->
     <color name="button_disabled_bg">#E0E0E0</color>
     <color name="button_disabled_text">#9E9E9E</color>
+
+    <!-- Warna Tombol Aktif (Senada dengan Ungu Tema) -->
+    <color name="button_active_bg">#6A1B9A</color>
+    <color name="button_active_text">#FFFFFF</color>
+
+    <color name="black_text">#000000</color>
 </resources>
