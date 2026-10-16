@@ -8,6 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDatePickerState
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlinx.coroutines.delay
 
 @Composable
@@ -72,5 +79,30 @@ fun FormBiodataScreen() {
                 }
             }
         )
+    }
+    val datePickerState = rememberDatePickerState()
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDatePicker = false
+                    datePickerState.selectedDateMillis?.let { millis ->
+                        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        tglLahir = formatter.format(Date(millis))
+                    }
+                }) {
+                    Text(stringResource(id = R.string.btn_ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text(stringResource(id = R.string.btn_cancel))
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
     }
 }
