@@ -3,6 +3,12 @@ package com.example.questtugasuserinput
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.delay
 
 @Composable
 fun FormBiodataScreen() {
@@ -49,5 +55,22 @@ fun FormBiodataScreen() {
         colorResource(id = R.color.button_active_text)
     } else {
         colorResource(id = R.color.button_disabled_text)
+    }
+    if (isSubmitted) {
+        LaunchedEffect(isSubmitted) {
+            delay(5000L) // Dialog tertutup otomatis setelah 5 detik
+            isSubmitted = false
+        }
+
+        AlertDialog(
+            onDismissRequest = { isSubmitted = false },
+            title = { Text(text = stringResource(id = R.string.title_submitted_data)) },
+            text = { Text(text = submittedResultText) },
+            confirmButton = {
+                TextButton(onClick = { isSubmitted = false }) {
+                    Text(text = stringResource(id = R.string.btn_ok))
+                }
+            }
+        )
     }
 }
